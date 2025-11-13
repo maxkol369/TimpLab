@@ -1,49 +1,71 @@
 #include "TableRouteCipher.h"
+#include <iostream>
+#include <vector>
 
-TableRouteCipher::TableRouteCipher(int skey) { key = skey; }
+using namespace std;
 
-string TableRouteCipher ::encrypt(string& text)
-{
-    int k = 0;
-    int simvoli = text.size();
-    int stroki = ((simvoli) / key);
-    char** tabl = new char*[stroki];
-    for(int i = 0; i < stroki; i++)
-        tabl[i] = new char[key];
-    for(int i = 0; i < stroki; i++)
-        for(int j = 0; j < key; j++) {
-            if(k < simvoli) {
-                tabl[i][j] = text[k];
-                k++;
-            }
-        }
-    k = 0;
-    for(int j = key - 1; j >= 0; j--)
-        for(int i = 0; i < stroki; i++) {
-            text[k] = tabl[i][j];
-            k++;
-        }
-    return text;
+TableRouteCipher::TableRouteCipher(int skey) { 
+    key = skey; 
 }
 
-string TableRouteCipher ::decrypt(string& text)
-{
-    int k = 0;
-    int simvoli = text.size();
-    int stroki = ((simvoli) / key);
-    char** tabl = new char*[stroki];
-    for(int i = 0; i < stroki; i++)
-        tabl[i] = new char[key];
-    for(int j = key - 1; j >= 0; j--)
-        for(int i = 0; i < stroki; i++) {
-            tabl[i][j] = text[k];
-            k++;
-        }
-    k = 0;
-    for(int i = 0; i < stroki; i++)
+string TableRouteCipher::encrypt(string& text) {
+    int text_length = text.size();
+    int rows = (text_length + key - 1) / key;
+    
+    // Создаем таблицу
+    vector<vector<char>> table(rows, vector<char>(key, ' '));
+    
+    // Заполняем таблицу слева направо, сверху вниз
+    int index = 0;
+    for(int i = 0; i < rows; i++) {
         for(int j = 0; j < key; j++) {
-            text[k] = tabl[i][j];
-            k++;
+            if(index < text_length) {
+                table[i][j] = text[index];
+                index++;
+            }
         }
-    return text;
+    }
+    
+    // Читаем таблицу сверху вниз, справа налево
+    string result;
+    for(int j = key - 1; j >= 0; j--) {
+        for(int i = 0; i < rows; i++) {
+            if(table[i][j] != ' ') {
+                result += table[i][j];
+            }
+        }
+    }
+    
+    return result;
+}
+
+string TableRouteCipher::decrypt(string& text) {
+    int text_length = text.size();
+    int rows = (text_length + key - 1) / key;
+    
+    // Создаем таблицу
+    vector<vector<char>> table(rows, vector<char>(key, ' '));
+    
+    // Заполняем таблицу сверху вниз, справа налево
+    int index = 0;
+    for(int j = key - 1; j >= 0; j--) {
+        for(int i = 0; i < rows; i++) {
+            if(index < text_length) {
+                table[i][j] = text[index];
+                index++;
+            }
+        }
+    }
+    
+    // Читаем таблицу слева направо, сверху вниз
+    string result;
+    for(int i = 0; i < rows; i++) {
+        for(int j = 0; j < key; j++) {
+            if(table[i][j] != ' ') {
+                result += table[i][j];
+            }
+        }
+    }
+    
+    return result;
 }

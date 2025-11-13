@@ -2,38 +2,67 @@
 #include <string>
 #include "TableRouteCipher.h"
 
-bool isValid(const int k, string &text) {
-    int razm=text.size();
-    if (k>razm)
-        return false;
-    return true;
-}
+using namespace std;
 
 int main() {
     string text;
     int key;
-    unsigned vibor;
-    cout << "Введите текcт: ";
+    int choice;
+    
+    cout << "===================================" << endl;
+    cout << "       ШИФР ПЕРЕСТАНОВКИ" << endl;
+    cout << "===================================" << endl;
+    
+    // Ввод текста
+    cout << "Введите текст: ";
     cin >> text;
-    cout << "Введите кол-во столбцов: ";
+    
+    // Ввод ключа
+    cout << "Введите количество столбцов: ";
     cin >> key;
-    if (!isValid(key, text)) {
-        cout << "Ключ не корректен\n";
+    
+    // Проверка ключа
+    if (key <= 0) {
+        cout << "Ошибка: ключ должен быть больше 0" << endl;
         return 1;
     }
-    cout<<"Ключ загружен\n";
-    TableRouteCipher shifr(key);
-    do {
-        cout << "Шифратор готов. Выберите опрецию (Выход-0, Шифрока-1, Расшифровка-2): ";
-        cin >> vibor;
-        if (vibor > 2) {
-            cout << "Неверная операция!\n" << endl;
-        } else if (vibor > 0) {
-            if (vibor == 1)
-                cout << shifr.encrypt(text) << endl;
-            else
-                cout << shifr.decrypt(text) << endl;
+    
+    // Создаем шифратор
+    TableRouteCipher cipher(key);
+    
+    // Основной цикл
+    while (true) {
+        cout << endl;
+        cout << "Текущий текст: " << text << endl;
+        cout << "Ключ: " << key << " столбцов" << endl;
+        cout << endl;
+        cout << "1 - Зашифровать" << endl;
+        cout << "2 - Расшифровать" << endl;
+        cout << "0 - Выйти" << endl;
+        cout << "Выберите действие: ";
+        cin >> choice;
+        
+        if (choice == 1) {
+            string result = cipher.encrypt(text);
+            cout << "Результат шифрования: " << result << endl;
+            text = result;
         }
-    } while (vibor != 0);
+        else if (choice == 2) {
+            string result = cipher.decrypt(text);
+            cout << "Результат расшифровки: " << result << endl;
+            text = result;
+        }
+        else if (choice == 0) {
+            cout << "Выход из программы" << endl;
+            break;
+        }
+        else {
+            cout << "Неверный выбор" << endl;
+            // Очищаем буфер при неверном вводе
+            cin.clear();
+            cin.ignore(10000, '\n');
+        }
+    }
+    
     return 0;
 }

@@ -69,19 +69,19 @@ SUITE(EncryptTest)
 SUITE(DecryptText)
 {
     TEST_FIXTURE(KeyB_fixture, UpCaseString) {
-        CHECK_EQUAL("ПОСТАВТЕМНОГОБАЛЛОВ", p->decrypt("ТРФХГЕХИПРСЖСДГООСЕ"));
+        CHECK_EQUAL("ПОСТАВТЕМНОГОБАЛЛОВ", p->decrypt("ТСФХГЕХИПРСЖСДГООСЕ"));
     }
     TEST_FIXTURE(KeyB_fixture, LowCaseString) {
-        CHECK_THROW(p->decrypt("трфХГЕХИПРСЖСДГООСЕ"), cipher_error);
+        CHECK_THROW(p->decrypt("тсфХГЕХИПРСЖСДГООСЕ"), cipher_error);
     }
     TEST_FIXTURE(KeyB_fixture, WhitespaceString) {
-        CHECK_THROW(p->decrypt("ТРФХГЕХИ  ПРСЖСДГООСЕ"), cipher_error);
+        CHECK_THROW(p->decrypt("ТСФХГЕХИ ПРСЖСДГООСЕ"), cipher_error);
     }
     TEST_FIXTURE(KeyB_fixture, DigitsString) {
-        CHECK_THROW(p->decrypt("55ГЕХИПРСЖСДГООСЕ"), cipher_error);
+        CHECK_THROW(p->decrypt("55ФХГЕХИПРСЖСДГООСЕ"), cipher_error);
     }
     TEST_FIXTURE(KeyB_fixture, PunctString) {
-        CHECK_THROW(p->decrypt("ТРФХГЕХИПРСЖСДГООСЕ!"), cipher_error);
+        CHECK_THROW(p->decrypt("ТСФХГЕХИПРСЖСДГООСЕ!"), cipher_error);
     }
     TEST_FIXTURE(KeyB_fixture, EmptyString) {
         CHECK_THROW(p->decrypt(""), cipher_error);

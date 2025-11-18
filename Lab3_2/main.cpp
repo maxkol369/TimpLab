@@ -7,7 +7,7 @@ std::string s = "FORTNITE";
 SUITE(KeyTest) {
     TEST(ValidKey) {
         code cipher(4, "FORTNITE");
-        CHECK_EQUAL("TTOENRIF", cipher.encryption(s));
+        CHECK_EQUAL("TERTOIFN", cipher.encryption(s));
     }
     TEST(LongKey) {
         CHECK_THROW(code(1, "FORTNITE"), cipher_error);
@@ -27,15 +27,15 @@ struct KeyB_fixture {
 SUITE(EncryptTest) {
     TEST_FIXTURE(KeyB_fixture, UpCaseString) {
         std::string input = "FORTNITE";
-        CHECK_EQUAL("TTOENRIF", t->encryption(input));
+        CHECK_EQUAL("TERTOIFN", t->encryption(input));
     }
     TEST_FIXTURE(KeyB_fixture, LowCaseString) {
         std::string input = "fortnite";
-        CHECK_EQUAL("ttoenrif", t->encryption(input));
+        CHECK_EQUAL("tertoifn", t->encryption(input));
     }
     TEST_FIXTURE(KeyB_fixture, StringWithWhitspaceAndPunct) {
         std::string input = "FORT NITE";
-        CHECK_EQUAL("TTOENRIF", t->encryption(input));
+        CHECK_EQUAL("TERTOIFN", t->encryption(input));
     }
     TEST_FIXTURE(KeyB_fixture, StringWithNumbers) {
         std::string input = "FORT4ITE";
@@ -59,12 +59,12 @@ SUITE(EncryptTest) {
 
 SUITE(DecryptText) {
     TEST_FIXTURE(KeyB_fixture, UpCaseString) {
-        std::string input1 = "TTOENRIF";
+        std::string input1 = "TERTOIFN";
         std::string input2 = "FORTNITE";
         CHECK_EQUAL("FORTNITE", t->transcript(input1, input2));
     }
     TEST_FIXTURE(KeyB_fixture, LowCaseString) {
-        std::string input1 = "ttoenrif";
+        std::string input1 = "tertoifn";
         std::string input2 = "fortnite";
         CHECK_EQUAL("fortnite", t->transcript(input1, input2));
     }

@@ -38,14 +38,3 @@ vector<int> modAlphaCipher::convert(const wstring& s)
     for(auto c : s) {
         result.push_back(alphaNum[c]);
     }
-    return result;
-}
-
-wstring modAlphaCipher::convert(const vector<int>& v)
-{
-    wstring result;
-    for(auto i : v) {
-        result.push_back(numAlpha[i]);
-    }
-    return result;
-}
